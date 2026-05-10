@@ -15,7 +15,7 @@ function NotesList() {
             const responseNotes = await resNotes.json();
             const resultNotes = responseNotes.notes;
             setNoteslists(resultNotes);
-            console.log(responseNotes)
+           
         }
         getNotes();
     }, []);
@@ -35,7 +35,7 @@ function NotesList() {
             <div className="flex-1 overflow-y-auto">
                 {noteslists.map((notelist) => (
                     <div
-                        key={notelist.index}
+                        key={notelist.id}
                         className={`px-[20px] py-[16px] cursor-pointer border-b border-[#333333] transition-colors ${notelist.active ? "bg-[#333333]" : "hover:bg-[#33333366]"}`}
                     >
                         <h3 className="text-white text-[15px] font-bold mb-[4px] truncate">

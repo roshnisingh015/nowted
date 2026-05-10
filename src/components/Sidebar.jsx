@@ -13,13 +13,23 @@ function Sidebar() {
             const response = await res.json();
             const result = response.folders.slice(0,5)
             setFolders(result);
-            console.log(response);
-        };
+          };
         getFolders();
     }, []);
 
-    const [folders, setFolders] = useState([]);
+     useEffect(() => {
+        const getRecent = async () => {
+            const recentRes = await fetch("https://nowted-server.remotestate.com/notes/recent");
+            const recentData = await recentRes.json();
+            const recResult = recentData.recentNotes;
+            setRecentNotes(recResult);
 
+          };
+        getRecent();
+    }, []);
+
+    const [folders, setFolders] = useState([]);
+    const [recentNotes,setRecentNotes] = useState([]);
     return (
         <aside className="w-[240px] bg-[#252525] flex flex-col h-full border-r border-[#333333]">
             {/* Header */}
@@ -46,25 +56,27 @@ function Sidebar() {
                     <h3 className="text-[12px] uppercase text-[#999999] font-bold tracking-[0.1em] mb-[12px]">
                         Recents
                     </h3>
+
                     <div className="flex flex-col gap-[4px]">
-                        <div className="flex items-center gap-[12px] px-[12px] py-[10px] bg-[#4A3F8A] rounded-[8px] text-white cursor-pointer">
+                        {recentNotes.map((note, index)=>(
+                            <div 
+                               key={note.id}
+                               className={`flex items-center gap-[12px] px-[12px] py-[10px]   rounded-[8px] text-white cursor-pointer transition-colors ${
+                                index ===0  
+                                ? "bg-[#4A3F8A] text-white"
+                                : "text-[#999999] hover:bg-[#333333]" 
+                            
+                        }`}
+                        >
+                        
                             <FileText size={18} className="min-w-[18px]" />
                             <span className="text-[15px] font-medium truncate">
-                                Reflection on the Month of June
+                                {note.title}
                             </span>
                         </div>
-                        <div className="flex items-center gap-[12px] px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors">
-                            <FileText size={18} className="min-w-[18px]" />
-                            <span className="text-[15px] font-medium truncate">
-                                Project proposal
-                            </span>
-                        </div>
-                        <div className="flex items-center gap-[12px] px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors">
-                            <FileText size={18} className="min-w-[18px]" />
-                            <span className="text-[15px] font-medium truncate">
-                                Travel itinerary
-                            </span>
-                        </div>
+                        ))}
+                           
+                      
                     </div>
                 </section>
 

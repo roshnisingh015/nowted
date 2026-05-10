@@ -21,7 +21,7 @@ function NoteContent() {
       const resContent  = await response.json();
       
       setNote(resContent.note)
-       console.log(resContent.note);
+       console.log(resContent.note.folder.name);
        
     }
 
@@ -54,7 +54,7 @@ function NoteContent() {
             <Folder size={18} />
             <span className="text-[15px]">Folder</span>
           </div>
-          <span className="text-white text-[15px] underline decoration-[#333333] underline-offset-[6px] decoration-1">{note.folder.name}</span>
+          <span className="text-white text-[15px] underline decoration-[#333333] underline-offset-[6px] decoration-1">{note.folder?.name}</span>
         </div>
       </div>
 

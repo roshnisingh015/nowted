@@ -14,10 +14,11 @@ import { useEffect, useState } from "react";
  * NoteContent Component
  * Flex-1, Dark background #1C1C1C
  */
-function NoteContent() {
+function NoteContent({noteId}) {
   useEffect(()=>{
+    if (!noteId) return;
     let content = async()=>{
-      const response = await fetch("https://nowted-server.remotestate.com/notes/9a74de36-110c-44ee-8505-c095e9b5b401")
+      const response = await fetch(`https://nowted-server.remotestate.com/notes/${noteId}`)
       const resContent  = await response.json();
       
       setNote(resContent.note)
@@ -26,7 +27,7 @@ function NoteContent() {
     }
 
     content();
-  },[])
+  },[noteId])
 
   const[note,setNote] = useState({})
  

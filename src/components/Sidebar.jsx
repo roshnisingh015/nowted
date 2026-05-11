@@ -6,12 +6,12 @@ import { Search, Plus, FileText, Folder, Star, Trash2, Archive, SquarePen } from
  * Fixed width 240px, Dark background #252525
  */
 
-function Sidebar() {
+function Sidebar({handler}) {
     useEffect(() => {
         const getFolders = async () => {
             const res = await fetch("https://nowted-server.remotestate.com/folders");
             const response = await res.json();
-            const result = response.folders.slice(0,5)
+            const result = response.folders.slice(0,10)
             setFolders(result);
           };
         getFolders();
@@ -88,6 +88,7 @@ function Sidebar() {
                     <div className="flex flex-col gap-[4px]">
                         {folders.map((folder) => (
                             <div
+                                onClick={()=>handler(folder.id)}
                                 key={folder.id}
                                 className="flex items-center gap-[12px] px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors"
                             >

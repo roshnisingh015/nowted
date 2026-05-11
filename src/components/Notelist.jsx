@@ -6,11 +6,13 @@ import { useState, useEffect } from "react";
  * Fixed width 260px, Dark background #2A2A2A
  */
 
-function NotesList() {
+function NotesList({folderId,noteHandler}) {
     useEffect(() => {
+          if (!folderId) return;
         const getNotes = async () => {
+            console.log(folderId)
             const resNotes = await fetch(
-                "https://nowted-server.remotestate.com/notes?archived=false&favorite=false&deleted=false&folderId=ea0c5c00-b99a-455b-afa1-488d6b82b492&page=1&limit=10&search=search",
+                `https://nowted-server.remotestate.com/notes?archived=false&favorite=false&deleted=false&folderId=${folderId}&page=1&limit=10&search=search`,
             );
             const responseNotes = await resNotes.json();
             const resultNotes = responseNotes.notes;
@@ -18,7 +20,7 @@ function NotesList() {
            
         }
         getNotes();
-    }, []);
+    }, [folderId]);
 
     let [noteslists, setNoteslists] = useState([]);
 
@@ -28,7 +30,7 @@ function NotesList() {
         <div className="w-[260px] bg-[#2A2A2A] flex flex-col h-full border-r border-[#333333]">
             {/* List Header */}
             <div className="p-[20px] pb-[10px]">
-                <h2 className="text-white text-[18px] font-bold">Personal</h2>
+                <h2 className="text-white text-[18px] font-bold"></h2>
             </div>
 
             {/* Note Cards */}
@@ -36,6 +38,7 @@ function NotesList() {
                 {noteslists.map((notelist) => (
                     <div
                         key={notelist.id}
+                        onClick={()=>{noteHandler(notelist.id)}}
                         className={`px-[20px] py-[16px] cursor-pointer border-b border-[#333333] transition-colors ${notelist.active ? "bg-[#333333]" : "hover:bg-[#33333366]"}`}
                     >
                         <h3 className="text-white text-[15px] font-bold mb-[4px] truncate">

@@ -6,25 +6,20 @@ import { useState, useEffect } from "react";
  * Fixed width 260px, Dark background #2A2A2A
  */
 
-function NotesList({folderId,noteHandler}) {
+function NotesList({ folderId, noteHandler, archived, favourites, trash }) {
     useEffect(() => {
-          if (!folderId) return;
         const getNotes = async () => {
-            console.log(folderId)
             const resNotes = await fetch(
-                `https://nowted-server.remotestate.com/notes?archived=false&favorite=false&deleted=false&folderId=${folderId}&page=1&limit=10&search=search`,
+                `https://nowted-server.remotestate.com/notes?archived=${archived}&favorite=${favourites}&deleted=${trash}&folderId=${folderId}&page=1&limit=10&search=`,
             );
             const responseNotes = await resNotes.json();
             const resultNotes = responseNotes.notes;
             setNoteslists(resultNotes);
-           
-        }
+        };
         getNotes();
-    }, [folderId]);
+    }, [folderId, archived, favourites, trash]);
 
     let [noteslists, setNoteslists] = useState([]);
-
-    
 
     return (
         <div className="w-[260px] bg-[#2A2A2A] flex flex-col h-full border-r border-[#333333]">
@@ -38,7 +33,9 @@ function NotesList({folderId,noteHandler}) {
                 {noteslists.map((notelist) => (
                     <div
                         key={notelist.id}
-                        onClick={()=>{noteHandler(notelist.id)}}
+                        onClick={() => {
+                            noteHandler(notelist.id);
+                        }}
                         className={`px-[20px] py-[16px] cursor-pointer border-b border-[#333333] transition-colors ${notelist.active ? "bg-[#333333]" : "hover:bg-[#33333366]"}`}
                     >
                         <h3 className="text-white text-[15px] font-bold mb-[4px] truncate">

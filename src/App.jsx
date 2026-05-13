@@ -28,7 +28,7 @@ function App() {
             />
 
             <NotesList
-                noteHandler={setNoteId(id)}
+                noteHandler={(id) => setNoteId(id)}
                 folderId={view.type === "folder" ? view.folderId : ""}
                 archived={view.type === "archived"}
                 favourites={view.type === "favourites"}

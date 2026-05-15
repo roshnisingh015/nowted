@@ -5,7 +5,12 @@ import { useState } from "react";
  * NoteView Component
  * Presentational component for displaying note details.
  */
-function NoteView({ note }) {
+function NoteView({ note,  onNoteDelete }) {
+  let handleDelete = async()=>{ await fetch(`https://nowted-server.remotestate.com/notes/${note.id}`, {method:"DELETE"})
+    onNoteDelete()
+    setIsMenuOpen(false)
+  }
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (!note || Object.keys(note).length === 0) return null;
@@ -35,7 +40,7 @@ function NoteView({ note }) {
                 <span>Archived</span>
               </button>
               <div className="h-[1px] bg-[#444444] my-1 mx-2"></div>
-              <button className="w-full flex items-center gap-3 px-4 py-2 text-[#FF4D4D] hover:bg-[#444444] transition-colors text-sm">
+              <button onClick={handleDelete} className="w-full flex items-center gap-3 px-4 py-2 text-[#FF4D4D] hover:bg-[#444444] transition-colors text-sm">
                 <Trash2 size={18} />
                 <span>Delete</span>
               </button>

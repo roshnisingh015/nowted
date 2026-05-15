@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
  * Fixed width 260px, Dark background #2A2A2A
  */
 
-function NotesList({ folderId, noteHandler, archived, favourites, trash }) {
+function NotesList({ folderId, noteHandler, archived, favourites, trash, refresh }) {
     useEffect(() => {
         const getNotes = async () => {
             const resNotes = await fetch(
@@ -17,7 +17,7 @@ function NotesList({ folderId, noteHandler, archived, favourites, trash }) {
             setNoteslists(resultNotes);
         };
         getNotes();
-    }, [folderId, archived, favourites, trash]);
+    }, [folderId, archived, favourites, trash, refresh]);
 
     let [noteslists, setNoteslists] = useState([]);
 

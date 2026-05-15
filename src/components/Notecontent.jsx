@@ -6,7 +6,7 @@ import EmptyNoteState from "./EmptyNoteState"
  * NoteContent Component
  * Container component that handles fetching note data.
  */
-function NoteContent({ noteId }) {
+function NoteContent({ noteId,  onNoteDelete }) {
   const [note, setNote] = useState({});
 
   useEffect(() => {
@@ -30,7 +30,9 @@ function NoteContent({ noteId }) {
 
   return (
     <main className="flex-1 bg-[#1C1C1C] flex flex-col h-full overflow-hidden">
-      {noteId ? <NoteView note={note}  />: <EmptyNoteState/>}
+      {noteId ? <NoteView note={note}
+      onNoteDelete = {onNoteDelete}  
+      />: <EmptyNoteState/>}
     </main>
   );
 }

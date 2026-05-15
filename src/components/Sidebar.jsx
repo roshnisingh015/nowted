@@ -6,7 +6,7 @@ import { Search, Plus, FileText, Folder, Star, Trash2, Archive, SquarePen } from
  * Fixed width 240px, Dark background #252525
  */
 
-function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandler }) {
+function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandler, refresh,onFolderDelete }) {
     useEffect(() => {
         const getFolders = async () => {
             const res = await fetch("https://nowted-server.remotestate.com/folders");
@@ -15,7 +15,7 @@ function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandle
             setFolders(result);
         };
         getFolders();
-    }, []);
+    }, [refresh]);
 
     useEffect(() => {
         const getRecent = async () => {
@@ -26,7 +26,10 @@ function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandle
         };
         getRecent();
     }, []);
-
+    const handleDeleteFolder = async(id) =>{
+        await fetch(`https://nowted-server.remotestate.com/folders/${id}`,{method:"DELETE"})
+        onFolderDelete()
+    }
     const [folders, setFolders] = useState([]);
     const [recentNotes, setRecentNotes] = useState([]);
     return (
@@ -85,12 +88,23 @@ function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandle
                             <div
                                 onClick={() => folderHandler(folder.id)}
                                 key={folder.id}
-                                className="flex items-center gap-[12px] px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors"
+                                className="flex items-center justify-between px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors group"
                             >
-                                <Folder size={18} className="min-w-[18px]" />
-                                <span className="text-[15px] font-medium truncate">
-                                    {folder.name}
-                                </span>
+                                <div className="flex items-center gap-[12px] overflow-hidden">
+                                    <Folder size={18} className="min-w-[18px]" />
+                                    <span className="text-[15px] font-medium truncate">
+                                        {folder.name}
+                                    </span>
+                                </div>
+                                <Trash2 
+                                    size={16} 
+                                    className="min-w-[16px] text-[#999999] hover:text-[#FF4D4D] transition-colors opacity-0 group-hover:opacity-100" 
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleDeleteFolder(folder.id);
+                                        // Potential delete logic here
+                                    }}
+                                />
                             </div>
                         ))}
                     </div>

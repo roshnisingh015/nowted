@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,  } from "react";
 import NoteView from "./NoteView";
 import EmptyNoteState from "./EmptyNoteState"
+import RestoreNoteState from "./RestoreNoteState";
 
 /**
  * NoteContent Component
@@ -8,8 +9,14 @@ import EmptyNoteState from "./EmptyNoteState"
  */
 function NoteContent({ noteId,  onNoteDelete }) {
   const [note, setNote] = useState({});
+  const [isDelete, setIsDelete] = useState(false);
+  const [deletedNoteTitle, setDeletedNoteTitle] = useState("")
 
   useEffect(() => {
+    if (noteId){
+      setIsDelete(false)
+    }
+
     if (!noteId) {
       setNote({});
       return;
@@ -28,11 +35,34 @@ function NoteContent({ noteId,  onNoteDelete }) {
     fetchNote();
   }, [noteId]);
 
+  const handleSwitchToRestore = () =>{
+    setDeletedNoteTitle(note.title)
+    setIsDelete(true)
+    onNoteDelete()
+  }
+
+  const handleRestore = () => {
+    setIsDelete(false)
+    onNoteDelete()
+  }
+
   return (
     <main className="flex-1 bg-[#1C1C1C] flex flex-col h-full overflow-hidden">
-      {noteId ? <NoteView note={note}
-      onNoteDelete = {onNoteDelete}  
-      />: <EmptyNoteState/>}
+      {noteId && !isDelete ? 
+      (
+       <NoteView note={note}
+      onNoteDelete = {handleSwitchToRestore} 
+      />)
+      : 
+      isDelete?
+      (
+        <RestoreNoteState
+        noteTitle={deletedNoteTitle}
+        onRestore={handleRestore}
+        />
+      )
+      :
+       <EmptyNoteState/>}
     </main>
   );
 }

@@ -15,6 +15,7 @@ function NoteContent({   onNoteDelete }) {
   const [deletedNoteTitle, setDeletedNoteTitle] = useState("")
 
   useEffect(() => {
+    console.log(noteId)
     if (noteId){
       setIsDelete(false)
     }

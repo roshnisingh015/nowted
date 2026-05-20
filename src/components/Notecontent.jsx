@@ -44,10 +44,25 @@ function NoteContent({   onNoteDelete }) {
     onNoteDelete()
   }
 
-  const handleRestore = () => {
-    setIsDelete(false)
-    onNoteDelete()
-  }
+  const handleRestore = async () => {
+    try {
+      const response = await fetch(`https://nowted-server.remotestate.com/notes/${noteId}/restore`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setIsDelete(false);
+        onNoteDelete();
+      } else {
+        console.error("Failed to restore note on server.");
+      }
+    } catch (error) {
+      console.error("Network error during restore:", error);
+    }
+  };
 
   return (
     <main className="flex-1 bg-[#1C1C1C] flex flex-col h-full overflow-hidden">

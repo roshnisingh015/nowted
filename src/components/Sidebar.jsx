@@ -1,6 +1,7 @@
 import nowtedLogo from "../icons/nowted-logo.svg";
 import { useEffect, useState } from "react";
 import { Search, Plus, FileText, Folder, Star, Trash2, Archive, SquarePen } from "lucide-react";
+import { NavLink } from "react-router-dom";
 /**
  * Sidebar Component
  * Fixed width 240px, Dark background #252525
@@ -85,8 +86,8 @@ function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandle
                     </h3>
                     <div className="flex flex-col gap-[4px]">
                         {folders.map((folder) => (
-                            <div
-                                onClick={() => folderHandler(folder.id)}
+                            <NavLink
+                                to={`/folder/${folder.id}`}
                                 key={folder.id}
                                 className="flex items-center justify-between px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors group"
                             >
@@ -105,7 +106,7 @@ function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandle
                                         // Potential delete logic here
                                     }}
                                 />
-                            </div>
+                            </NavLink>
                         ))}
                     </div>
                 </section>
@@ -116,27 +117,27 @@ function Sidebar({ folderHandler, archivedHandler, trashHandler, favouriteHandle
                         More
                     </h3>
                     <div className="flex flex-col gap-[4px]">
-                        <div
-                            onClick={favouriteHandler}
+                        <NavLink
+                           to={"/favourites"}
                             className="flex items-center gap-[12px] px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors"
                         >
                             <Star size={18} className="min-w-[18px]" />
                             <span className="text-[15px] font-medium truncate">Favorites</span>
-                        </div>
-                        <div
-                            onClick={trashHandler}
+                        </NavLink>
+                        <NavLink
+                            to={"/trash"}
                             className="flex items-center gap-[12px] px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors"
                         >
                             <Trash2 size={18} className="min-w-[18px]" />
                             <span className="text-[15px] font-medium truncate">Trash</span>
-                        </div>
-                        <div
-                            onClick={archivedHandler}
+                        </NavLink>
+                        <NavLink
+                            to={"/archived"}
                             className="flex items-center gap-[12px] px-[12px] py-[10px] text-[#999999] hover:bg-[#333333] rounded-[8px] cursor-pointer transition-colors"
                         >
                             <Archive size={18} className="min-w-[18px]" />
                             <span className="text-[15px] font-medium truncate">Archived Notes</span>
-                        </div>
+                        </NavLink>
                     </div>
                 </section>
             </div>

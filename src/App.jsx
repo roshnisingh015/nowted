@@ -2,50 +2,33 @@ import Sidebar from "./components/Sidebar";
 import NotesList from "./components/Notelist";
 import NoteContent from "./components/Notecontent";
 import { useState } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 
 function App() {
-    const [view, setView] = useState({
-        type: "folder",
-        folderId: "",
-    });
-    const [noteId, setNoteId] = useState("");
     const [refresh, setRefresh] = useState(0);
-    const handleRefresh = () =>{
-        setRefresh(prev=>prev+1)
-        setNoteId("")
-    }
+    const handleRefresh = () => {
+        setRefresh((prev) => prev + 1);
+    };
 
     return (
         <div className="flex h-screen w-screen bg-[#1C1C1C] text-white font-['Source_Sans_3',_sans-serif] overflow-hidden">
-            <Sidebar
-                folderHandler={(id) => {
-                    setView({ type: "folder", folderId: id });
-                }}
-                archivedHandler={() => {
-                    setView({ type: "archived" });
-                }}
-                favouriteHandler={() => {
-                    setView({ type: "favourites" });
-                }}
-                trashHandler={() => {
-                    setView({ type: "trash" });
-                }}
-                refresh = {refresh}
-                onFolderDelete = {handleRefresh}
-            />
+            <Sidebar refresh={refresh} onFolderDelete={handleRefresh} />
 
-            <NotesList
-                noteHandler={(id) => setNoteId(id)}
-                refresh={refresh}
-                folderId={view.type === "folder" ? view.folderId : ""}
-                archived={view.type === "archived"}
-                favourites={view.type === "favourites"}
-                trash={view.type === "trash"}
+            <Routes>
+                <Route path="/" element={<NotesList refresh={refresh} />} />
+                <Route
+                    path="/favourites"
+                    element={<NotesList favourites={true} refresh={refresh} />}
+                />
+                <Route path="/archived" element={<NotesList archived={true} refresh={refresh} />} />
+                <Route path="/trash" element={<NotesList trash={true} refresh={refresh} />} />
+                <Route path="/folder/:folderId" element={<NotesList refresh={refresh} />} />
 
-            />
-
-            <NoteContent noteId={noteId}
-            onNoteDelete={handleRefresh} />
+                <Route
+                    path="/folder/:folderId/note/:noteId"
+                    element={<NoteContent onNoteDelete={handleRefresh} />}
+                />
+            </Routes>
         </div>
     );
 }

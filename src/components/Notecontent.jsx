@@ -2,12 +2,14 @@ import { useEffect, useState,  } from "react";
 import NoteView from "./NoteView";
 import EmptyNoteState from "./EmptyNoteState"
 import RestoreNoteState from "./RestoreNoteState";
+import { useParams } from "react-router-dom";
 
 /**
  * NoteContent Component
  * Container component that handles fetching note data.
  */
-function NoteContent({ noteId,  onNoteDelete }) {
+function NoteContent({   onNoteDelete }) {
+  const {noteId} = useParams()
   const [note, setNote] = useState({});
   const [isDelete, setIsDelete] = useState(false);
   const [deletedNoteTitle, setDeletedNoteTitle] = useState("")
